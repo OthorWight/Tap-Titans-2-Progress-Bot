@@ -1,4 +1,4 @@
-﻿// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1 ]
+// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1 ]
 
 SCREEN_SIZE: 480x800
 
@@ -166,6 +166,7 @@ var #colorLevelUpAvailable 1338350
 var #colorBlack 397861
 var #colorStatsButton 3826675
 var #colorGray 2695200
+var #colorNoThanksButton 688378
 //var #colorItemBossActive 2432264 127 70
 
 // ----------- TimeSets
@@ -1068,6 +1069,17 @@ goto :pressSkills
 	//equipment stacking
 	if #randomX > 280 and #randomX < 430 and #randomY > 300
 		goto :randomTouch
+	endif
+	
+	//if fairy ad windows opens, close it.
+	getColor #color1 134 620
+	if #color1 == #colorNoThanksButton
+		touchDown 0 134 620
+		sleep #btnDelay
+		#time = #time + #btnDelay
+		touchUp 0
+		sleep #btnDelay
+		#time = #time + #btnDelay
 	endif
 	
 	if #enableTapping == 1
