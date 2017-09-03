@@ -1004,6 +1004,15 @@ goto :runActions
 goto :pressSkills
 
 :startBossWithSkills
+
+	//start boss
+	touchDown 0 420 40
+	sleep #btnDelay
+	#time = #time + #btnDelay
+	touchUp 0
+	sleep #btnDelay
+	#time = #time + #btnDelay
+
 	if #startBossSkill == 2
 		touchPress 0 120 710
 		goto :startBossWithSecondarySkill
@@ -1027,13 +1036,6 @@ goto :pressSkills
 	
 	#time = #time + 400
 	
-	//start boss
-	touchDown 0 420 40
-	sleep #btnDelay
-	#time = #time + #btnDelay
-	touchUp 0
-	sleep #btnDelay
-	#time = #time + #btnDelay
 goto :pressSkills
 
 :startBossWithSecondarySkill
