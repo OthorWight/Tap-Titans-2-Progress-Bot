@@ -89,10 +89,10 @@ var #startSkillCheckNow 1
 var #checkBossFight 0
 
 //wait for given skill (2-6) then start boss
-var #startBossSkill 0
+var #startBossSkill 4
 //; 2 = critical strike
 //; 3 = midas
-//; 4 = fire blade
+//; 4 = fire blade (default)
 //; 5 = heroes
 //; 6 = shadow clone
 
@@ -126,7 +126,6 @@ var #color2 0
 var #loopCount 0
 var #clanQuestLoopCount 0
 var #pressLevelUpLoopCount 0
-var #skillCheckStepper 0
 var #actionStepper 0
 var #levelHeroesStepper 0
 var #bossFightInProgress 0
@@ -167,6 +166,8 @@ var #colorBlack 397861
 var #colorStatsButton 3826675
 var #colorGray 2695200
 var #colorNoThanksButton 688378
+var #colorNewSkill 243
+var #colorLevelSkill 239
 //var #colorItemBossActive 2432264 127 70
 
 // ----------- TimeSets
@@ -236,6 +237,8 @@ var #resultClanQuest 0
 		goto :init
 	elseif #minutes >= #prestigeAfterXMinutes and #enableAutoprestige == 1
 		goto :checkPrestige
+	elseif #minutes > #prestigeAfterXMinutes
+		#time = 0
 	elseif #timeDiff >= #runActionsEveryXMinutes
 		goto :runActions
 	elseif #resultCheckBoss == 0
@@ -589,102 +592,137 @@ goto :clanQuestClose
 // ----------- CHECK SKILLS
 :checkSkills
 
-	if #prestige == 0 and #startSkillCheckNow == 0
-		goto :checkSkillsFinish
-	endif
-
-	if #skillsUnlocked == 5 and #justUnlockSkills == 1
-		toast skills unlocked, stop now until next prestige
-		goto :checkSkillsFinish
-	endif
-
-	#skillCheckStepper = #skillCheckStepper + 1
-
-	if #skillCheckStepper == 1
-		// first skill
-		sleep #btnDelay
-		#time = #time + #btnDelay
-		touchDown 0 466 650
-		sleep #btnDelay
-		#time = #time + #btnDelay
+	//Open Master Menu
+	getColor #color1 37 777
+	if #color1 == 4222708
+		touchDown 0 37 777
 		touchUp 0
-		goto :checkSkills
-	elseif #skillCheckStepper <= 6
-		goto :checkSkillsUnlock
+		sleep 200
+		#time = #time + 200
 	endif
 
-	//slide back
+	//Move list down
 	touchDown 1 280 650
 	sleep 200
 	touchMove 1 280 600
 	sleep 50
 	touchMove 1 280 700
 	sleep 50
-	touchMove 1 280 750
-	sleep 50
-	touchMove 1 280 780
 	touchUp 1
-	#time = #time + 350
-goto :checkSkillsFinish
+	sleep 2000
+	#time = #time + 2300
 
-:checkSkillsUnlock
-	
+	//Move list up
+	touchDown 1 280 650
 	sleep 200
-	#time = #time + 250
-	
-	getRGB #colorRed #colorGreen #colorBlue 450 710
-	
-	if #colorBlue == 2 or #colorBlue == 5
-		#skillsUnlocked = #skillsUnlocked + 1
-	endif
-	
-	if #colorBlue == 2
-		sleep 100
-		touchDown 0 466 730
-		sleep 250
-		touchUp 0
-		sleep 200
-		#time = #time + 450
-	endif
-	
-	if #justUnlockSkills == 0
-		touchPress 0 466 730
-		sleep 50
-		touchPress 0 466 730
-		sleep 50
-		touchPress 0 466 730
-		sleep 50
-		#time = #time + 750
-	endif
-	
-	if #skillCheckStepper == 6
-		goto :checkSkills
-	endif
-goto :checkSkillsSlideDown
-
-:checkSkillsFinish
-	#skillCheckStepper = 0
-	if #enableHeroes == 1
-		goto :runActions
-	endif
-goto :closeMenu
-
-	
-:checkSkillsSlideDown
-	//slide
-	touchDown 1 280 750
-	sleep 200
-	touchMove 1 280 725
+	touchMove 1 280 700
 	sleep 50
-	touchMove 1 280 660
-	sleep 50
-	touchMove 1 280 655
-	sleep 50
-	touchMove 1 280 649
-	sleep 200
+	touchMove 1 280 635
+	sleep 300
 	touchUp 1
 	#time = #time + 550
-goto :checkSkills
+	
+	//Heavenly Strike
+	getRGB #colorRed #colorGreen #colorBlue 350 590
+	//toast #colorRed - #justUnlockSkills
+	if #justUnlockSkills == 1 and #colorRed >= #colorNewSkill
+		touchDown 0 350 590
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	elseif #justUnlockSkills == 0 and #colorRed >= #colorLevelSkill
+		touchDown 0 350 590
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	endif
+	
+	//Critical Strike
+	getRGB #colorRed #colorGreen #colorBlue 350 660
+	//toast #colorRed - #justUnlockSkills
+	if #justUnlockSkills == 1 and #colorRed >= #colorNewSkill
+		touchDown 0 350 660
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	elseif #justUnlockSkills == 0 and #colorRed >= #colorLevelSkill
+		touchDown 0 350 660
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	endif
+	
+	//Hand of Midas
+	getRGB #colorRed #colorGreen #colorBlue 350 730
+	//toast #colorRed - #justUnlockSkills
+	if #justUnlockSkills == 1 and #colorRed >= #colorNewSkill
+		touchDown 0 350 730
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	elseif #justUnlockSkills == 0 and #colorRed >= #colorLevelSkill
+		touchDown 0 350 730
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	endif
+	
+	/Move list up
+	touchDown 1 280 650
+	sleep 200
+	touchMove 1 280 700
+	sleep 50
+	touchMove 1 280 500
+	sleep 1000
+	touchUp 1
+	#time = #time + 1250
+
+	//Fire Sword
+	getRGB #colorRed #colorGreen #colorBlue 350 590
+	//toast #colorRed - #justUnlockSkills
+	if #justUnlockSkills == 1 and #colorRed >= #colorNewSkill
+		touchDown 0 350 590
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	elseif #justUnlockSkills == 0 and #colorRed >= #colorLevelSkill
+		touchDown 0 350 590
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	endif
+	
+	//War Cry
+	getRGB #colorRed #colorGreen #colorBlue 350 660
+	//toast #colorRed - #justUnlockSkills
+	if #justUnlockSkills == 1 and #colorRed >= #colorNewSkill
+		touchDown 0 350 660
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	elseif #justUnlockSkills == 0 and #colorRed >= #colorLevelSkill
+		touchDown 0 350 660
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	endif
+	
+	//Shadow Clone
+	getRGB #colorRed #colorGreen #colorBlue 350 730
+	//toast #colorRed - #justUnlockSkills
+	if #justUnlockSkills == 1 and #colorRed >= #colorNewSkill
+		touchDown 0 350 730
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	elseif #justUnlockSkills == 0 and #colorRed >= #colorLevelSkill
+		touchDown 0 350 730
+		touchUp 0
+		sleep 50
+		#time = #time + 50
+	endif
+
+goto :closeMenu
 
 :closeMenu
 	sleep #btnDelay
