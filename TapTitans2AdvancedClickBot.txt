@@ -673,9 +673,9 @@ goto :clanQuestClose
 	touchMove 1 280 700
 	sleep 50
 	touchMove 1 280 500
-	sleep 1000
+	sleep 2000
 	touchUp 1
-	#time = #time + 1250
+	#time = #time + 2250
 
 	//Fire Sword
 	getRGB #colorRed #colorGreen #colorBlue 350 590
