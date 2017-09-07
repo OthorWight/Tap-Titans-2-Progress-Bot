@@ -618,9 +618,9 @@ goto :clanQuestClose
 	touchMove 1 280 700
 	sleep 50
 	touchMove 1 280 635
-	sleep 300
+	sleep 2000
 	touchUp 1
-	#time = #time + 550
+	#time = #time + 2250
 	
 	//Heavenly Strike
 	getRGB #colorRed #colorGreen #colorBlue 350 590
