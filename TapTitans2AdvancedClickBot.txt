@@ -194,6 +194,19 @@ var #resultClanQuest 0
 
 // ----------- MAIN
 :start
+
+	//if fairy ad windows opens, close it.
+	getColor #color1 134 620
+	//log Fairy Ad ---  #color1
+	if #color1 == #colorNoThanksButton
+		touchDown 0 134 620
+		sleep #btnDelay
+		#time = #time + #btnDelay
+		touchUp 0
+		sleep #btnDelay
+		#time = #time + #btnDelay
+	endif
+
 	#loopCount = #loopCount + 1
 
 	#resultManaPool = #loopCount % 901
@@ -380,6 +393,17 @@ goto :start
 goto :start
 
 :runActions
+	//if fairy ad windows opens, close it.
+	getColor #color1 134 620
+	//log Fairy Ad ---  #color1
+	if #color1 == #colorNoThanksButton
+		touchDown 0 134 620
+		sleep #btnDelay
+		#time = #time + #btnDelay
+		touchUp 0
+		sleep #btnDelay
+		#time = #time + #btnDelay
+	endif
 	#timeLastActionRun = #minutes
 	#actionStepper = #actionStepper + 1
 	
@@ -444,24 +468,33 @@ goto :runActions
 
 	sleep 300
 	#time = #time + 650
-
-	touchDown 0 400 720
-	touchUp 0
-	sleep #menuPopUpDelay
-	#time = #time + #menuPopUpDelay
-
+	
+	getColor #color1 353 723
+	if #color1 == 436473
+		touchDown 0 353 723
+		touchUp 0
+		sleep #menuPopUpDelay
+		#time = #time + #menuPopUpDelay
+	else
+		#time = 0
+		#seconds = 0
+		#secondsTotal = 0
+		#minutes = 0
+		goto :init
+	endif
+	
 	touchDown 0 240 640
 	sleep #btnDelay
 	touchUp 0
 	sleep #menuPopUpDelay
-	getColor #color1 430 540
+	getColor #color1 418 540
 	
-	if #color1 == 6384247
+	if #color1 == 274092 or #color1 == 5263440 or #color1 == 6384247
 		touchDown 0 330 535
 		sleep #btnDelay
 		touchUp 0
 		sleep 9000
-		goto :afterPrestige
+		goto :init
 	else
 		touchPress 470 450
 		touchPress 470 450
@@ -593,6 +626,7 @@ goto :clanQuestClose
 :checkSkills
 
 	//Open Master Menu
+	sleep 2000
 	getColor #color1 37 777
 	if #color1 == 4222708
 		touchDown 0 37 777
@@ -610,7 +644,7 @@ goto :clanQuestClose
 	sleep 50
 	touchUp 1
 	sleep 2000
-	#time = #time + 2300
+	#time = #time + 4300
 
 	//Move list up
 	touchDown 1 280 650
@@ -618,8 +652,9 @@ goto :clanQuestClose
 	touchMove 1 280 700
 	sleep 50
 	touchMove 1 280 635
-	sleep 2000
+	sleep 1000
 	touchUp 1
+	sleep 1000
 	#time = #time + 2250
 	
 	//Heavenly Strike
@@ -667,7 +702,7 @@ goto :clanQuestClose
 		#time = #time + 50
 	endif
 	
-	/Move list up
+	//Move list up
 	touchDown 1 280 650
 	sleep 200
 	touchMove 1 280 700
