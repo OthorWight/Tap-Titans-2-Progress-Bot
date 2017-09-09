@@ -494,7 +494,7 @@ goto :runActions
 		sleep #btnDelay
 		touchUp 0
 		sleep 9000
-		goto :init
+		goto :afterPrestige
 	else
 		touchPress 470 450
 		touchPress 470 450
