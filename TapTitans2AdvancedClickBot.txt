@@ -773,6 +773,17 @@ goto :runActions
 // ----------- LEVEL HEROES
 :levelHeroes
 
+	//if fairy ad windows opens, close it.
+	getColor #color1 134 620
+	if #color1 == #colorNoThanksButton
+		touchDown 0 134 620
+		sleep #btnDelay
+		#time = #time + #btnDelay
+		touchUp 0
+		sleep #btnDelay
+		#time = #time + #btnDelay
+	endif
+
 	//collect gold
 	touchDown 0 30 230
 	sleep 200
