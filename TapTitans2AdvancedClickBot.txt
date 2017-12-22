@@ -22,7 +22,7 @@ var #enableTapping 1
 // ----------- Actions ----------- [ General ]
 
 //level ms, heroes, skills every x minutes
-var #runActionsEveryXMinutes 3
+var #runActionsEveryXMinutes 5
 //; 3 = (default)
 //; 1-99 = in Minutes
 
@@ -54,7 +54,7 @@ var #clanQuestRunsPerReadyUp 1
 var #enableHeroes 1
 
 //clicks on level up per run
-var #skillIntensity 1
+var #skillIntensity 3
 //; 1 = (default)
 //; 2-99 = Multiple level ups
 
@@ -77,7 +77,7 @@ var #intervalHeroes 0
 var #intervalShadowClone 0
 
 //just level each skill once
-var #justUnlockSkills 1
+var #justUnlockSkills 0
 //; 0 = level skills much as possible
 //; 1 = (default) just unlock
 
@@ -89,7 +89,7 @@ var #startSkillCheckNow 1
 var #checkBossFight 0
 
 //wait for given skill (2-6) then start boss
-var #startBossSkill 4
+var #startBossSkill 6
 //; 2 = critical strike
 //; 3 = midas
 //; 4 = fire blade (default)
@@ -105,14 +105,14 @@ var #startBossSecondarySkill 0
 //; 6 = shadow clone
 
 // ----------- Actions ----------- [ Prestige ]
-var #enableAutoprestige 0
-var #prestigeAfterXMinutes 45
+var #enableAutoprestige 1
+var #prestigeAfterXMinutes 150
 
 // ----------- Developer / Expert
 var #maxHitCount 9999999
 
 //show current script time
-var #showCurrentTime 0
+var #showCurrentTime 1
 
 //if you wanna sync the script time with real time you can play around with this value
 var #timeScaleAddition 17
@@ -146,7 +146,7 @@ var #recheckClanQuest 0
 var #btnDelay 150
 var #hitDelay 40
 var #menuSlideDelay 200
-var #menuPopUpDelay 500
+var #menuPopUpDelay 1000
 var #loadingClanQuestDelay 3000
 
 // ----------- Menu Coords
@@ -466,30 +466,31 @@ goto :runActions
 	touchMove 1 280 400
 	touchUp 1
 
-	sleep 300
-	#time = #time + 650
-	
+	sleep 2000
+	#time = #time + 2350
+
 	getColor #color1 353 723
-	if #color1 == 436473
+	if #color1 >= 369000 and #color1 <=  370000 or #color1 = 436473
 		touchDown 0 353 723
 		touchUp 0
 		sleep #menuPopUpDelay
 		#time = #time + #menuPopUpDelay
 	else
-		#time = 0
-		#seconds = 0
-		#secondsTotal = 0
-		#minutes = 0
-		goto :init
+		log failed -- #color1
+	  	//#time = 0
+		//#seconds = 0
+		//#secondsTotal = 0
+		//#minutes = 0
+		goto :checkPrestige
 	endif
-	
+
 	touchDown 0 240 640
 	sleep #btnDelay
 	touchUp 0
-	sleep #menuPopUpDelay
-	getColor #color1 418 540
-	
-	if #color1 == 274092 or #color1 == 5263440 or #color1 == 6384247
+	sleep #menuPopUpDelay + 2000
+	getColor #color1 330 535
+	log Prestige --  #color1
+	if #color1 == 274092 or #color1 == -3366360
 		touchDown 0 330 535
 		sleep #btnDelay
 		touchUp 0
@@ -625,8 +626,8 @@ goto :clanQuestClose
 // ----------- CHECK SKILLS
 :checkSkills
 
-	//Open Master Menu
 	sleep 2000
+	//Open Master Menu
 	getColor #color1 37 777
 	if #color1 == 4222708
 		touchDown 0 37 777
@@ -644,14 +645,14 @@ goto :clanQuestClose
 	sleep 50
 	touchUp 1
 	sleep 2000
-	#time = #time + 4300
+	#time = #time + 2300
 
 	//Move list up
 	touchDown 1 280 650
 	sleep 200
 	touchMove 1 280 700
 	sleep 50
-	touchMove 1 280 635
+	touchMove 1 280 610
 	sleep 1000
 	touchUp 1
 	sleep 1000
@@ -1058,7 +1059,9 @@ goto :runActions
 	#color2 = 0
 	
 	getColor #color2 459 29
-		
+ 	
+	if #startBossSkill == 1
+		getColor #color1 28 685
 	if #startBossSkill == 2
 		getColor #color1 108 685
 	elseif #startBossSkill == 4
@@ -1098,6 +1101,10 @@ goto :pressSkills
 	sleep #btnDelay
 	#time = #time + #btnDelay
 
+	if #startBossSkill == 1
+		touchPress 0 40 710
+		goto :startBossWithSecondarySkill
+	endif
 	if #startBossSkill == 2
 		touchPress 0 120 710
 		goto :startBossWithSecondarySkill
@@ -1143,20 +1150,21 @@ goto :pressSkills
 // ----------- RANDOM ATTACK
 :randomTouch
 	if #enableFairies == 1
-		rand #randomX 60 415
+		rand #randomX 60 480
 		rand #randomY 160 420
 	else
-		rand #randomX 60 415
+		rand #randomX 60 480
 		rand #randomY 270 420
 	endif
 	
 	//equipment stacking
-	if #randomX > 280 and #randomX < 430 and #randomY > 300
-		goto :randomTouch
-	endif
+//	if #randomX > 280 and #randomX < 430 and #randomY > 300
+//		goto :randomTouch
+//	endif
 	
 	//if fairy ad windows opens, close it.
 	getColor #color1 134 620
+	//log Fairy Ad ---  #color1
 	if #color1 == #colorNoThanksButton
 		touchDown 0 134 620
 		sleep #btnDelay
@@ -1170,6 +1178,6 @@ goto :pressSkills
 		touchDown 0 #randomX #randomY
 		touchUp 0
 	endif
-	sleep #hitDelay
-	#time = #time + #hitDelay
+	sleep #hitDelay + 500
+	#time = #time + #hitDelay 
 goto :start
