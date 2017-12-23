@@ -508,6 +508,19 @@ goto :start
 
 // ----------- CHECK CLAN QUEST
 :checkClanQuest
+
+	//if fairy ad windows opens, close it.
+	getColor #color1 134 620
+	//log Fairy Ad ---  #color1
+	if #color1 == #colorNoThanksButton
+		touchDown 0 134 620
+		sleep #btnDelay
+		#time = #time + #btnDelay
+		touchUp 0
+		sleep #btnDelay
+		#time = #time + #btnDelay
+	endif
+
 	getRGB #colorRed #colorGreen #colorBlue 72 21
 	getColor #color1 65 795
 	
