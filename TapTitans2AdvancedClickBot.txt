@@ -1,4 +1,5 @@
-// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1 ]
+// -  Tap Titans 2 AdvancedClickBot by Tune389 - Edited by OthorWight [ v0.1 exp]
+// -  Compatible with game version 2.5.x
 
 SCREEN_SIZE: 480x800
 
@@ -6,10 +7,10 @@ SCREEN_SIZE: 480x800
 
 var #enableFairies 1
 //; 1 = (default) collect all fairies
-//; 0 = no more ad pop ups will apear
+//; 0 = no more ad pop ups will appear
 
 var #enablePremiumCollect 0
-//; 1 = collect all premium popups
+//; 1 = collect all premium pop ups
 //; 0 = (default)
 
 var #hatchEggs 1
@@ -39,6 +40,7 @@ var #fullManaSkill 3
 //; 4 = fire blade
 //; 5 = heroes
 //; 6 = shadow clone
+//; 7 = Run Skills 2,4,5,and 6
 
 //Action Order | 1,2,3 = push heroes | 2,3,1 = push ms
 var #orderLevelHeroes 1
@@ -51,7 +53,7 @@ var #enableClanQuest 1
 //fight the clan boss with max possible hits
 var #clanQuestRunsPerReadyUp 1
 //; 1 = (default) attack every ready up once for free
-//; 2-99 = spend dias for more attacks
+//; 2-99 = spend diamonds for more attacks
 
 // ----------- Actions ----------- [ Heroes ]
 var #enableHeroes 1
@@ -61,10 +63,11 @@ var #skillIntensity 3
 //; 1 = (default)
 //; 2-99 = Multiple level ups
 
-var #maxOutHero 1
+var #maxOutHero 4
 //; 1 = Damon (Mage)
 //; 2 = Finn (Ranged)
 //; 3 = Nohni (Melee)
+//; 4 = All
 
 var #focusMainHero 1
 //; increase main hero level runs
@@ -398,16 +401,30 @@ goto :start
 goto :start
 
 :startSkill
-	if #fullManaSkill == 2
+	if #fullManaSkill == 2 or #fullManaSkill == 7
 		touchPress 0 120 710
-	elseif #fullManaSkill == 3
+		sleep #btnDelay
+		touchUp
+	endif	
+	if #fullManaSkill == 3
 		touchPress 0 200 710
-	elseif #fullManaSkill == 5
+		sleep #btnDelay
+		touchUp
+	endif	
+	if #fullManaSkill == 5 or #fullManaSkill == 7
 		touchPress 0 360 710
-	elseif #fullManaSkill == 6
+		sleep #btnDelay
+		touchUp
+	endif	
+	if #fullManaSkill == 6 or #fullManaSkill == 7
 		touchPress 0 430 710
-	elseif #fullManaSkill == 4
+		sleep #btnDelay
+		touchUp
+	endif
+	if #fullManaSkill == 4 or #fullManaSkill == 7
 		touchPress 0 280 710
+		sleep #btnDelay
+		touchUp
 	endif
 	#time = #time + 200
 goto :start
@@ -493,7 +510,8 @@ goto :runActions
 	#time = #time + 2350
 
 	getColor #color1 353 723
-	if #color1 >= 369000 and #color1 <=  370000 or #color1 = 436473
+	if #color1 >= 369000 
+	//and #color1 <=  370000 or #color1 = 436473
 		touchDown 0 353 723
 		touchUp 0
 		sleep #menuPopUpDelay
@@ -507,25 +525,35 @@ goto :runActions
 		goto :checkPrestige
 	endif
 
-	touchDown 0 240 640
+	touchDown 0 260 630
 	sleep #btnDelay
 	touchUp 0
 	sleep #menuPopUpDelay + 2000
-	getColor #color1 330 535
+	
+	getColor #color1 320 535
 	log Prestige --  #color1
-	if #color1 == 274092 or #color1 == -3366360
-		touchDown 0 330 535
-		sleep #btnDelay
-		touchUp 0
-		sleep 9000
-		goto :afterPrestige
-	else
-		touchPress 470 450
-		touchPress 470 450
-		touchPress 470 450
-		touchPress 470 450
-		goto :checkPrestige
-	endif 
+	
+	touchDown 0 320 535
+	sleep #btnDelay
+	touchUp 0
+	sleep #menuPopUpDelay + 2000
+	
+	sleep 9000
+	goto :afterPrestige
+	
+	//if #color1 == 274092 or #color1 == -3366360
+	//	touchDown 0 330 535
+	//	sleep #btnDelay
+	//	touchUp 0
+	//	sleep 9000
+	//	goto :afterPrestige
+	//else
+	//	touchPress 470 450
+	//	touchPress 470 450
+	//	touchPress 470 450
+	//	touchPress 470 450
+	//	goto :checkPrestige
+	//endif 
 goto :start
 
 
@@ -955,17 +983,26 @@ goto :levelHeroes
 
 	#loopDetectionCount = #loopDetectionCount + 1
 
-	if #maxOutHero == 1
+	if #maxOutHero == 1 or #maxOutHero == 4
 		touchDown 1 466 549
-	elseif #maxOutHero == 2
+		sleep 100
+		touchUp 1
+		sleep 40
+	endif
+	if #maxOutHero == 2 or #maxOutHero == 4
 		touchDown 1 466 624
-	elseif #maxOutHero == 3
+		sleep 100
+		touchUp 1
+		sleep 40
+	endif
+	if #maxOutHero == 3 or #maxOutHero == 4
 		touchDown 1 466 701
+		sleep 100
+		touchUp 1
+		sleep 40
 	endif		
 	
-	sleep 100
-	touchUp 1
-	sleep 40
+
 		
 	if #loopDetectionCount == #mainHeroRoundTripLevelUps and #levelMainHero == 1
 		#levelMainHero = 0
